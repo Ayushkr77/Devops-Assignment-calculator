@@ -15,17 +15,13 @@ pipeline {
     }
 
     stage('Unit Tests') {
-      steps {
-        // create folder for test reports
-        bat 'mkdir test-reports'
-
-        // run pytest and generate JUnit XML
-        bat 'pytest --junitxml=test-reports/pytest.xml'
-
-        // publish test results
-        junit 'test-reports/pytest.xml'
-      }
+        steps {
+            bat 'mkdir test-reports'
+            bat 'set PYTHONPATH=%CD% && pytest --junitxml=test-reports/pytest.xml'
+            junit 'test-reports/pytest.xml'
+        }
     }
+
 
     stage('Build Docker Image') {
       steps {
